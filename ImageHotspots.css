@@ -1,0 +1,41 @@
+.ih-image-outer {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 15px; }
+
+.ih-image {
+  position: relative; }
+  .ih-image .ih-hotspot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background-color: #1263ff;
+    box-shadow: 0 0 15px white;
+    cursor: move;
+    opacity: 0; }
+    .ih-image .ih-hotspot:before {
+      content: '';
+      position: absolute;
+      background-color: white;
+      width: 2px;
+      height: 8px;
+      left: 9px;
+      top: 6px; }
+    .ih-image .ih-hotspot:after {
+      content: '';
+      position: absolute;
+      background-color: white;
+      width: 8px;
+      height: 2px;
+      left: 6px;
+      top: 9px; }
+    .ih-image .ih-hotspot.ih-hotspot-highlight {
+      background-color: #ff5c00; }
+  .ih-image.ih-ready .ih-hotspot {
+    opacity: 1; }
+
+.ImageHotspots .InputfieldHeader.ih-header-highlight {
+  outline: 3px solid #ff5c00 !important; }
