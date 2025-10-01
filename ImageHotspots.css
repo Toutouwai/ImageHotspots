@@ -4,6 +4,8 @@
   justify-content: center;
   width: 100%;
   margin-bottom: 15px; }
+  body.AdminThemeUikitDefault .ih-image-outer {
+    outline: 1px solid var(--pw-border-color); }
 
 .ih-image {
   position: relative; }
