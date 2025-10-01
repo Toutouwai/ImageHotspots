@@ -5,7 +5,7 @@
 		&:after { content:''; position:absolute; background-color:white; width:8px; height:2px; left:6px; top:9px; }
 		&.ih-hotspot-highlight { background-color:#ff5c00; }
 	}
-	&.ih-ready {
+	&.ih-image-ready {
 		.ih-hotspot { opacity:1; }
 	}
 }

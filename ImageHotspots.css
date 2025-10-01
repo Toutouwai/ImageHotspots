@@ -34,7 +34,7 @@
       top: 9px; }
     .ih-image .ih-hotspot.ih-hotspot-highlight {
       background-color: #ff5c00; }
-  .ih-image.ih-ready .ih-hotspot {
+  .ih-image.ih-image-ready .ih-hotspot {
     opacity: 1; }
 
 .ImageHotspots .InputfieldHeader.ih-header-highlight {

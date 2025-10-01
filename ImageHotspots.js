@@ -1,29 +1,29 @@
-$(document).ready(function() {
+$(function() {
 
 	// Initialise variables
 	let $hotspot;
 	let $parent;
-	let $repeater_item;
-	let $x_input;
-	let $y_input;
-	let centre_offset_x;
-	let centre_offset_y;
-	let mouse_offset_x;
-	let mouse_offset_y;
-	let boundary_bottom;
-	let boundary_right;
+	let $repeaterItem;
+	let $xInput;
+	let $yInput;
+	let centreOffsetX;
+	let centreOffsetY;
+	let mouseOffsetX;
+	let mouseOffsetY;
+	let boundaryBottom;
+	let boundaryRight;
 	let timer = 0;
 
 	// Set the position of a hotspot
-	function setHotspotPosition($hs, percentage_x, percentage_y) {
-		$hs.css('left', `calc(${percentage_x}% - ${$hs.outerWidth() / 2}px)`);
-		$hs.css('top', `calc(${percentage_y}% - ${$hs.outerHeight() / 2}px)`);
+	function setHotspotPosition($hs, percentageX, percentageY) {
+		$hs.css('left', `calc(${percentageX}% - ${$hs.outerWidth() / 2}px)`);
+		$hs.css('top', `calc(${percentageY}% - ${$hs.outerHeight() / 2}px)`);
 	}
 
 	// Get the hotspot for a given repeater item
-	function getHotspotForRepeaterItem($repeater_item) {
-		const $inputfield = $repeater_item.closest('.ImageHotspots');
-		return $inputfield.find('.ih-hotspot[data-id="' + $repeater_item.data('page') + '"]');
+	function getHotspotForRepeaterItem($repeaterItem) {
+		const $inputfield = $repeaterItem.closest('.ImageHotspots');
+		return $inputfield.find('.ih-hotspot[data-id="' + $repeaterItem.data('page') + '"]');
 	}
 
 	// Initialise hotspots
@@ -33,11 +33,11 @@ $(document).ready(function() {
 			$image.find('.ih-hotspot').each(function() {
 				const id = $(this).data('id');
 				const $r = $(`.InputfieldRepeaterItem[data-page="${id}"]`);
-				const percentage_x = $r.find('input[name^="hotspot_x_"]').val();
-				const percentage_y = $r.find('input[name^="hotspot_y_"]').val();
-				setHotspotPosition($(this), percentage_x, percentage_y);
+				const percentageX = $r.find('input[name^="hotspot_x_"]').val();
+				const percentageY = $r.find('input[name^="hotspot_y_"]').val();
+				setHotspotPosition($(this), percentageX, percentageY);
 			});
-			$image.addClass('ih-ready');
+			$image.addClass('ih-image-ready');
 		});
 	}
 
@@ -45,26 +45,26 @@ $(document).ready(function() {
 	function hotspotDrag(event) {
 		event.preventDefault();
 		// Get hotspot coordinates, adjusting for difference between mouse position and hotspot edge
-		let hotspot_x = event.pageX - mouse_offset_x - $parent.offset().left;
-		let hotspot_y = event.pageY - mouse_offset_y - $parent.offset().top;
+		let hotspotX = event.pageX - mouseOffsetX - $parent.offset().left;
+		let hotspotY = event.pageY - mouseOffsetY - $parent.offset().top;
 		// Get centre of hotspot
-		let centre_x = hotspot_x + centre_offset_x;
-		let centre_y = hotspot_y + centre_offset_y;
+		let centreX = hotspotX + centreOffsetX;
+		let centreY = hotspotY + centreOffsetY;
 		// Ensure hotspot centre stays within parent
-		if(centre_x < 0) hotspot_x = 0 - centre_offset_x;
-		if(centre_x > boundary_right) hotspot_x = boundary_right - centre_offset_x;
-		if(centre_y < 0) hotspot_y = 0 - centre_offset_y;
-		if(centre_y > boundary_bottom) hotspot_y = boundary_bottom - centre_offset_y;
-		centre_x = hotspot_x + centre_offset_x;
-		centre_y = hotspot_y + centre_offset_y;
+		if(centreX < 0) hotspotX = 0 - centreOffsetX;
+		if(centreX > boundaryRight) hotspotX = boundaryRight - centreOffsetX;
+		if(centreY < 0) hotspotY = 0 - centreOffsetY;
+		if(centreY > boundaryBottom) hotspotY = boundaryBottom - centreOffsetY;
+		centreX = hotspotX + centreOffsetX;
+		centreY = hotspotY + centreOffsetY;
 		// Calculate percentage coordinates
-		const percentage_x = (centre_x / boundary_right * 100).toFixed(2);
-		const percentage_y = (centre_y / boundary_bottom * 100).toFixed(2);
+		const percentageX = (centreX / boundaryRight * 100).toFixed(2);
+		const percentageY = (centreY / boundaryBottom * 100).toFixed(2);
 		// Set hotspot position
-		setHotspotPosition($hotspot, percentage_x, percentage_y);
+		setHotspotPosition($hotspot, percentageX, percentageY);
 		// Set input values
-		$x_input.val(percentage_x).trigger('change');
-		$y_input.val(percentage_y).trigger('change');
+		$xInput.val(percentageX).trigger('change');
+		$yInput.val(percentageY).trigger('change');
 	}
 
 	// Mousedown on hotspot
@@ -75,15 +75,15 @@ $(document).ready(function() {
 		$hotspot = $(this);
 		$parent = $hotspot.parent();
 		const id = $hotspot.data('id');
-		$repeater_item = $(`.InputfieldRepeaterItem[data-page="${id}"]`);
-		$x_input = $repeater_item.find('input[name^="hotspot_x_"]');
-		$y_input = $repeater_item.find('input[name^="hotspot_y_"]');
-		centre_offset_x = $hotspot.outerWidth() / 2;
-		centre_offset_y = $hotspot.outerHeight() / 2;
-		mouse_offset_x = event.pageX - $hotspot.offset().left;
-		mouse_offset_y = event.pageY - $hotspot.offset().top;
-		boundary_bottom = $parent.outerHeight();
-		boundary_right = $parent.outerWidth();
+		$repeaterItem = $(`.InputfieldRepeaterItem[data-page="${id}"]`);
+		$xInput = $repeaterItem.find('input[name^="hotspot_x_"]');
+		$yInput = $repeaterItem.find('input[name^="hotspot_y_"]');
+		centreOffsetX = $hotspot.outerWidth() / 2;
+		centreOffsetY = $hotspot.outerHeight() / 2;
+		mouseOffsetX = event.pageX - $hotspot.offset().left;
+		mouseOffsetY = event.pageY - $hotspot.offset().top;
+		boundaryBottom = $parent.outerHeight();
+		boundaryRight = $parent.outerWidth();
 		// Attach hotspot drag event handler
 		$(document).on('mousemove', hotspotDrag);
 	});
@@ -94,10 +94,10 @@ $(document).ready(function() {
 		$(document).off('mousemove', hotspotDrag);
 		// If this was a brief click on a hotspot, highlight the repeater item header
 		if(timer && new Date().getTime() - timer < 200) {
-			const $header = $repeater_item.children('.InputfieldHeader');
-			const is_highlighted = $header.hasClass('ih-header-highlight');
+			const $header = $repeaterItem.children('.InputfieldHeader');
+			const isHighlighted = $header.hasClass('ih-header-highlight');
 			$('.ih-header-highlight').removeClass('ih-header-highlight');
-			if(!is_highlighted) $header.addClass('ih-header-highlight');
+			if(!isHighlighted) $header.addClass('ih-header-highlight');
 		}
 		timer = 0;
 	});

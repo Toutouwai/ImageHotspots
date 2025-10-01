@@ -8,8 +8,8 @@ class ImageHotspots extends WireData implements Module {
 	 * Ready
 	 */
 	public function ready() {
-		$this->addHookAfter('FieldtypeRepeater::getConfigInputfields', $this, 'addConfigInputfields');
 		$this->addHookAfter('InputfieldRepeater::renderReadyHook', $this, 'beforeRepeaterRender');
+		$this->addHookAfter('FieldtypeRepeater::getConfigInputfields', $this, 'addConfigInputfields');
 	}
 
 	/**
@@ -24,9 +24,9 @@ class ImageHotspots extends WireData implements Module {
 		$page = $inputfield->hasPage;
 		$config = $this->wire()->config;
 		if(!$field || !$this->isValidRepeaterField($field)) return;
-		if(!$field->ih_image_field) return;
+		if(!$field->ihImageField) return;
 		if(!$page) return;
-		if(!$page->template->hasField($field->ih_image_field)) return;
+		if(!$page->template->hasField($field->ihImageField)) return;
 
 		// Add class
 		$inputfield->addClass('ImageHotspots', 'wrapClass');
@@ -39,15 +39,16 @@ class ImageHotspots extends WireData implements Module {
 
 		// Hook inputfield render to add preview page and hotspots because of limitations of prependMarkup
 		// https://github.com/processwire/processwire-requests/issues/536
-		$pageimage = $page->getUnformatted($field->ih_image_field)->first();
+		$pageimage = $page->getUnformatted($field->ihImageField)->first();
 		if($pageimage) {
 			// Disable AJAX loading as x/y inputs need to be present for each repeater item
 			$field->repeaterLoading = 0;
 			$this->wire()->addHookAfter("InputfieldRepeater(name=$inputfield->name)::render", function(HookEvent $event) use ($pageimage) {
 				/** @var InputfieldRepeater $inputfield */
 				$inputfield = $event->object;
+				if($inputfield->ihProcessed) return;
 				$field = $inputfield->hasField;
-				$height = $field->ih_height ?? $this->defaultImageHeight;
+				$height = $field->ihHeight ?? $this->defaultImageHeight;
 				$items = $inputfield->value;
 				$hotspots = '';
 				foreach($items as $item) {
@@ -64,6 +65,7 @@ class ImageHotspots extends WireData implements Module {
 </div>
 EOT;
 				$event->return = $prepend . $event->return;
+				$inputfield->ihProcessed = true;
 			});
 		}
 
@@ -95,7 +97,7 @@ EOT;
 
 		/** @var InputfieldFieldset $fs */
 		$fs = $modules->get('InputfieldFieldset');
-		$fs->name = 'ih_config';
+		$fs->name = 'ihConfig';
 		$fs->label = $this->_('Image Hotspots');
 		$fs->icon = 'circle-o';
 		$fs->addClass('InputfieldIsOffset', 'wrapClass');
@@ -104,25 +106,25 @@ EOT;
 		
 		/** @var InputfieldSelect $f */
 		$f = $modules->get('InputfieldSelect');
-		$f_name = 'ih_image_field';
-		$f->name = $f_name;
+		$name = 'ihImageField';
+		$f->name = $name;
 		$f->label = $this->_('Image field');
 		$f->notes = $this->_('The image field selected here should be added to the same template as this Repeater field.');
-		foreach($this->wire()->fields->find('type=FieldtypeImage, maxFiles=1') as $image_field) {
-			$f->addOption($image_field->name);
+		foreach($this->wire()->fields->find('type=FieldtypeImage, maxFiles=1') as $imageField) {
+			$f->addOption($imageField->name);
 		}
 		$f->columnWidth = 50;
-		$f->value = $field->$f_name;
+		$f->value = $field->$name;
 		$fs->add($f);
 
 		/** @var InputfieldInteger $f */
 		$f = $modules->get('InputfieldInteger');
-		$f_name = 'ih_image_height';
-		$f->name = $f_name;
+		$name = 'ihImageHeight';
+		$f->name = $name;
 		$f->label = $this->_('Image height');
 		$f->columnWidth = 50;
-		$f->showIf = 'ih_image_field!=""';
-		$f->value = $field->$f_name ?? $this->defaultImageHeight;
+		$f->showIf = 'ihImageField!=""';
+		$f->value = $field->$name ?? $this->defaultImageHeight;
 		$fs->add($f);
 	}
 
@@ -134,13 +136,13 @@ EOT;
 		$modules = $this->wire()->modules;
 
 		// Create fields for X and Y percentage coordinates
-		$f_name = 'hotspot_x';
-		$f = $fields->get($f_name);
+		$name = 'hotspot_x';
+		$f = $fields->get($name);
 		if(!$f) {
 			/** @var InputfieldFloat $f */
 			$f = $this->wire(new Field());
 			$f->type = $modules->get('FieldtypeDecimal');
-			$f->name = $f_name;
+			$f->name = $name;
 			$f->label = $this->_('X coordinate (%)');
 			$f->precision = 2;
 			$f->inputType = 'number';
@@ -148,13 +150,13 @@ EOT;
 			$f->addTag('ImageHotspots');
 			$f->save();
 		}
-		$f_name = 'hotspot_y';
-		$f = $fields->get($f_name);
+		$name = 'hotspot_y';
+		$f = $fields->get($name);
 		if(!$f) {
 			/** @var InputfieldFloat $f */
 			$f = $this->wire(new Field());
 			$f->type = $modules->get('FieldtypeDecimal');
-			$f->name = $f_name;
+			$f->name = $name;
 			$f->label = $this->_('Y coordinate (%)');
 			$f->precision = 2;
 			$f->inputType = 'number';
