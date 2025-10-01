@@ -3,7 +3,7 @@
 $info = array(
 	'title' => 'Image Hotspots',
 	'summary' => 'Allows a Repeater field to be used to define hotspots on an image.',
-	'version' => '0.1.0',
+	'version' => '0.1.1',
 	'author' => 'Robin Sallis',
 	'href' => 'https://github.com/Toutouwai/ImageHotspots',
 	'icon' => 'circle-o',

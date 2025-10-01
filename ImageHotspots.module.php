@@ -1,8 +1,17 @@
 <?php namespace ProcessWire;
 
-class ImageHotspots extends WireData implements Module {
+class ImageHotspots extends WireData implements Module, ConfigurableModule {
 
 	protected $defaultImageHeight = 600;
+
+	/**
+	 * Construct
+	 */
+	public function __construct() {
+		parent::__construct();
+		$this->hotspotColour = '#1263ff';
+		$this->highlightColour = '#ff5c00';
+	}
 
 	/**
 	 * Ready
@@ -63,6 +72,11 @@ class ImageHotspots extends WireData implements Module {
 		<img src="$pageimage->url" alt="$pageimage->description" style="max-height:{$height}px">
 	</div>
 </div>
+<style>
+.ih-image .ih-hotspot { background-color: $this->hotspotColour; }
+.ih-image .ih-hotspot.ih-hotspot-highlight { background-color: $this->highlightColour; }
+.ImageHotspots .InputfieldHeader.ih-header-highlight { outline-color:$this->highlightColour !important; }
+</style>
 EOT;
 				$event->return = $prepend . $event->return;
 				$inputfield->ihProcessed = true;
@@ -164,6 +178,35 @@ EOT;
 			$f->addTag('ImageHotspots');
 			$f->save();
 		}
+	}
+
+	/**
+	 * Config inputfields
+	 *
+	 * @param InputfieldWrapper $inputfields
+	 */
+	public function getModuleConfigInputfields($inputfields) {
+		$modules = $this->wire()->modules;
+
+		/** @var InputfieldText $f */
+		$f = $modules->get('InputfieldText');
+		$name = 'hotspotColour';
+		$f->type = 'color';
+		$f->name = $name;
+		$f->label = $this->_('Hotspot colour');
+		$f->columnWidth = 50;
+		$f->value = $this->$name;
+		$inputfields->add($f);
+
+		/** @var InputfieldText $f */
+		$f = $modules->get('InputfieldText');
+		$name = 'highlightColour';
+		$f->type = 'color';
+		$f->name = $name;
+		$f->label = $this->_('Highlight colour');
+		$f->columnWidth = 50;
+		$f->value = $this->$name;
+		$inputfields->add($f);
 	}
 
 }

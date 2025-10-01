@@ -14,7 +14,6 @@
     width: 20px;
     height: 20px;
     border-radius: 999px;
-    background-color: #1263ff;
     box-shadow: 0 0 15px white;
     cursor: move;
     opacity: 0; }
@@ -34,10 +33,8 @@
       height: 2px;
       left: 6px;
       top: 9px; }
-    .ih-image .ih-hotspot.ih-hotspot-highlight {
-      background-color: #ff5c00; }
   .ih-image.ih-image-ready .ih-hotspot {
     opacity: 1; }
 
 .ImageHotspots .InputfieldHeader.ih-header-highlight {
-  outline: 3px solid #ff5c00 !important; }
+  outline: 3px solid transparent !important; }

@@ -6,7 +6,7 @@ Allows a Repeater field to be used to define hotspots on an image. Being able to
 
 ## Setup
 
-1\. Install the module. Two decimal fields will automatically be created on install: `hotspot_x` and `hotspot_y`.
+1\. Install the module. Two decimal fields will automatically be created on install: `hotspot_x` and `hotspot_y`. You can set custom hotspot and highlight colours in the module config if needed.
 
 2\. Create a "single" image field (i.e. maximum number of files = 1) that you will use store the image that will have hotspots defined on it. Add this field to a template.
 
