@@ -186,27 +186,39 @@ EOT;
 	 * @param InputfieldWrapper $inputfields
 	 */
 	public function getModuleConfigInputfields($inputfields) {
-		$modules = $this->wire()->modules;
 
-		/** @var InputfieldText $f */
-		$f = $modules->get('InputfieldText');
+		$f = new InputfieldImageHotspotsColour();
 		$name = 'hotspotColour';
-		$f->type = 'color';
 		$f->name = $name;
 		$f->label = $this->_('Hotspot colour');
 		$f->columnWidth = 50;
 		$f->value = $this->$name;
 		$inputfields->add($f);
 
-		/** @var InputfieldText $f */
-		$f = $modules->get('InputfieldText');
+		$f = new InputfieldImageHotspotsColour();
 		$name = 'highlightColour';
-		$f->type = 'color';
 		$f->name = $name;
 		$f->label = $this->_('Highlight colour');
 		$f->columnWidth = 50;
 		$f->value = $this->$name;
 		$inputfields->add($f);
+	}
+
+}
+
+class InputfieldImageHotspotsColour extends InputfieldText {
+
+	public function render() {
+		$this->attr('onchange', 'inputfieldImageHotspotsColourChanged(this)');
+		$prepend = <<<EOT
+<input class="uk-input InputfieldMaxWidth" value="$this->value" type="color" onchange="inputfieldImageHotspotsColourChanged(this)" style="padding:0 2px; margin-bottom:5px; background-color:white; ">
+<script>
+function inputfieldImageHotspotsColourChanged(input) {
+	$(input).siblings('input').val(input.value);
+}
+</script>
+EOT;
+		return $prepend . parent::render();
 	}
 
 }
