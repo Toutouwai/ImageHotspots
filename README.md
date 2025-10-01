@@ -1,6 +1,6 @@
 # Image Hotspots
 
-Allows a Repeater field to be used to define hotspots on an image. Being able to add multiple fields of any type to the Repeater provides a lot of flexibility for the information you can store for a hotspot.
+Allows a Repeater field to be used to define hotspots on an image. Being able to add multiple fields of any type to the Repeater provides flexibility for the information you can store for a hotspot.
 
 ![Image Hotspots](https://github.com/user-attachments/assets/636d79e9-1883-4860-96ac-5dee466f270f)
 
