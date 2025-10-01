@@ -20,7 +20,7 @@ Allows a Repeater field to be used to define hotspots on an image. Being able to
 
 ## Usage in Page Edit
 
-When an image has been uploaded to the image field, the Repeater field will display a preview of the image at the top of the field.
+When an image has been saved to the image field, the Repeater field will display a preview of the image at the top of the field.
 
 Click "Add New" to create a new hotspot. The hotspot appears at the top left of the image initially and can be moved by clicking and dragging it to the desired location on the image. The X/Y coordinates of the hotspot will be automatically updated as the hotspot is moved. For precise adjustments you can modify the X/Y coordinates directly and the hotspot position will be updated.
 
