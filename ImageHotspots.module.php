@@ -61,7 +61,7 @@ class ImageHotspots extends WireData implements Module, ConfigurableModule {
 				$inputfield = $event->object;
 				if($inputfield->ihProcessed) return;
 				$field = $inputfield->hasField;
-				$height = $field->ihHeight ?? $this->defaultImageHeight;
+				$height = $field->ihImageHeight ?? $this->defaultImageHeight;
 				$items = $inputfield->value;
 				$hotspots = '';
 				foreach($items as $item) {
