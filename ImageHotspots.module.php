@@ -48,7 +48,11 @@ class ImageHotspots extends WireData implements Module, ConfigurableModule {
 
 		// Hook inputfield render to add preview page and hotspots because of limitations of prependMarkup
 		// https://github.com/processwire/processwire-requests/issues/536
-		$pageimage = $page->getUnformatted($field->ihImageField)->first();
+		// getUnformatted() can return null rather than an empty Pageimages when the Inputfield is
+		// built for a substitute page, e.g. the asset preload that InputfieldRepeater does for every
+		// field of every matrix type when the Repeater is nested inside a RepeaterMatrix block.
+		$pageimages = $page->getUnformatted($field->ihImageField);
+		$pageimage = $pageimages ? $pageimages->first() : null;
 		if($pageimage) {
 			// Disable AJAX loading as x/y inputs need to be present for each repeater item
 			$field->repeaterLoading = 0;
